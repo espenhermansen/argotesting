@@ -1,0 +1,32 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "5"
+  name: kured
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: kured
+    server: https://kubernetes.default.svc
+  project: cluster-operators
+  syncPolicy:
+    automated: {}
+    syncOptions:
+      - CreateNamespace=true
+  source:
+    repoURL: 'https://weaveworks.github.io/kured'
+    targetRevision: 2.4.3
+    chart: kured
+    helm:
+      values: |
+        configuration:
+          lockTtl: 30m                                # force clean annotation after this ammount of time (default 0, disabled)
+          endTime: "07:59:59"                         # only reboot before this time of day (default "23:59")
+          period: "1h"                                # reboot check period (default 1h0m0s)
+          rebootDays: [mo,tu,we]                      # only reboot on these days (default [su,mo,tu,we,th,fr,sa])
+          rebootSentinel: "/var/run/reboot-required"  # path to file whose existence signals need to reboot (default "/var/run/reboot-required")
+          startTime: "06:00:00"                       # only reboot after this time of day (default "0:00")
+          timeZone: "Europe/Oslo"                     # time-zone to use (valid zones from "time" golang package)
