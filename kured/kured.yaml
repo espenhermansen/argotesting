@@ -11,7 +11,7 @@ spec:
   destination:
     namespace: kured
     server: https://kubernetes.default.svc
-  project: cluster-operators
+  project: default
   syncPolicy:
     automated: {}
     syncOptions:
