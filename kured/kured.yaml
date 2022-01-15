@@ -18,8 +18,8 @@ spec:
       - CreateNamespace=true
   source:
     repoURL: 'https://weaveworks.github.io/kured'
-    chart: kured
     targetRevision: 2.4.3
+    chart: kured
     helm:
       values: |
         configuration:
